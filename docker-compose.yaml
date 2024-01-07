@@ -32,6 +32,8 @@ services:
       - ZEEBE_BROKER_DATA_DISKUSAGEREPLICATIONWATERMARK=0.999
       - "JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m"
     restart: always
+    security_opt:
+      - seccomp:unconfined
     healthcheck:
       test: [ "CMD-SHELL", "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/9600' || exit 1" ]
       interval: 30s
@@ -75,6 +77,8 @@ services:
       - management.endpoints.web.exposure.include=health
       - management.endpoint.health.probes.enabled=true
       - ZEEBE_CLIENT_CONFIG_PATH=/tmp/zeebe_auth_cache
+    security_opt:
+      - seccomp:unconfined
     healthcheck:
       test: [ "CMD-SHELL", "wget -O - -q 'http://localhost:8080/actuator/health/readiness'" ]
       interval: 30s
@@ -158,6 +162,8 @@ services:
       - management.endpoints.web.exposure.include=health
       - management.endpoint.health.probes.enabled=true
     env_file: connector-secrets.txt
+    security_opt:
+      - seccomp:unconfined
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health/readiness" ]
       interval: 30s
@@ -193,6 +199,8 @@ services:
       - CAMUNDA_OPTIMIZE_UI_LOGOUT_HIDDEN=true
       - management.endpoints.web.exposure.include=health
       - management.endpoint.health.probes.enabled=true
+    security_opt:
+      - seccomp:unconfined
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8090/api/readyz" ]
       interval: 30s
